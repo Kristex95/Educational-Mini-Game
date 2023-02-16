@@ -21,6 +21,7 @@ public class PropSpawning : MonoBehaviour, IObserver
 
 
     private bool doSpawn = false;
+    private int a;
 
 
     public void OnNotify(GameStates state)
