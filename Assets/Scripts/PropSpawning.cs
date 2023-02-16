@@ -10,6 +10,9 @@ public class PropSpawning : MonoBehaviour, IObserver
 
     [SerializeField] private GameObject propPrefab;
 
+
+    [SerializeField] private float propSpeed = 1f;
+
     [Header("Position offset")]
     [SerializeField] [Range(0.1f, 5f)] private float maxY;
     [SerializeField] [Range(-1f, 0f)] private float minY;
@@ -21,7 +24,6 @@ public class PropSpawning : MonoBehaviour, IObserver
 
 
     private bool doSpawn = false;
-    private int a;
 
 
     public void OnNotify(GameStates state)
@@ -55,9 +57,9 @@ public class PropSpawning : MonoBehaviour, IObserver
 
                 GameObject newProp = Instantiate(propPrefab, spawnpoints[randSide].position + new Vector3(0, Random.Range(minY, maxY), 0), Quaternion.identity);
                 if(randSide == 0)
-                    newProp.GetComponent<PropMoving>().SetHorizontalVelocity(1f);
+                    newProp.GetComponent<PropMoving>().SetHorizontalVelocity(1 * propSpeed);
                 else
-                    newProp.GetComponent<PropMoving>().SetHorizontalVelocity(-1f);
+                    newProp.GetComponent<PropMoving>().SetHorizontalVelocity(-1 * propSpeed);
 
                 float delay = Random.Range(minTime, maxTime);
                 yield return new WaitForSeconds(delay);
