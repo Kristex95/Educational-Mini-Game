@@ -16,11 +16,11 @@ public abstract class Subject : MonoBehaviour
         _observers.Remove(observer);
     }
 
-    protected void NotifyObservers(GameStates state)
+    protected void NotifyObservers(object message)
     {
         _observers.ForEach((_observer) =>
         {
-            _observer.OnNotify(state);
+            _observer.OnNotify(message);
         });
     }
 }

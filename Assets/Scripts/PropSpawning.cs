@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PropSpawning : MonoBehaviour, IObserver
+public class PropSpawning : MonoBehaviour
 {
     [SerializeField] Subject _gameManagerSubject;
 
@@ -21,17 +21,18 @@ public class PropSpawning : MonoBehaviour, IObserver
     [SerializeField] private float minTime;
     [SerializeField] private float maxTime;
 
-
-
     private bool doSpawn = false;
+    private bool coroutineRunning = false;
 
 
-    public void OnNotify(GameStates state)
+    public void OnStateChange()
     {
-        switch (state)
+        switch (GameManager.state)
         {
             case (GameStates.Play):
                 doSpawn = true;
+                if(!coroutineRunning)
+                    StartCoroutine(spawning());
                 break;
             case (GameStates.Pause):
                 doSpawn = false;
@@ -42,38 +43,23 @@ public class PropSpawning : MonoBehaviour, IObserver
         }
     }
 
-    private void Start()
-    {
-        StartCoroutine(spawning());
-    }
-
     IEnumerator spawning()
     {
-        while (true)
+        coroutineRunning = true;
+        while (doSpawn)
         {
-            if (doSpawn)
-            {
-                int randSide = Random.Range(0, 2);
+            int randSide = Random.Range(0, 2);
 
-                GameObject newProp = Instantiate(propPrefab, spawnpoints[randSide].position + new Vector3(0, Random.Range(minY, maxY), 0), Quaternion.identity);
-                if(randSide == 0)
-                    newProp.GetComponent<PropMoving>().SetHorizontalVelocity(1 * propSpeed);
-                else
-                    newProp.GetComponent<PropMoving>().SetHorizontalVelocity(-1 * propSpeed);
+            GameObject newProp = Instantiate(propPrefab, spawnpoints[randSide].position + new Vector3(0, Random.Range(minY, maxY), 0), Quaternion.identity);
+            if(randSide == 0)
+                newProp.GetComponent<PropMoving>().SetHorizontalVelocity(1 * propSpeed);
+            else
+                newProp.GetComponent<PropMoving>().SetHorizontalVelocity(-1 * propSpeed);
 
-                float delay = Random.Range(minTime, maxTime);
-                yield return new WaitForSeconds(delay);
-            }
+            float delay = Random.Range(minTime, maxTime);
+            yield return new WaitForSeconds(delay);
         }
+        coroutineRunning = false;
     }
 
-    private void OnEnable()
-    {
-        _gameManagerSubject.AddObserver(this);
-    }
-
-    private void OnDisable()
-    {
-        _gameManagerSubject.RemoveObserver(this);
-    }
 }

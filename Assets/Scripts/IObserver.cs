@@ -1,5 +1,4 @@
 public interface IObserver
 {
-    public void OnNotify(GameStates state);
-
+    public void OnNotify(object message);
 }

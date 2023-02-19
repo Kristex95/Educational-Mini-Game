@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using System;
 
-public class GameManager : Subject
+public class GameManager : MonoBehaviour
 {
+    [SerializeField]
+    public GameEvent onGameStateChange;
+
     public static GameManager Instance;
 
-    public GameStates state;
+    public static GameStates state;
 
     public int score { get; private set; }
 
@@ -25,7 +28,7 @@ public class GameManager : Subject
 
         switch (newState)
         {
-            case GameStates.Play:                
+            case GameStates.Play:
                 break;
             case GameStates.End:
                 break;
@@ -35,6 +38,18 @@ public class GameManager : Subject
                 break;
         }
 
-        NotifyObservers(newState);
+        onGameStateChange.TriggerEvent();
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape) && state == GameStates.Play)
+        {
+            UpdateGameState(GameStates.Pause);
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && state == GameStates.Pause)
+        {
+            UpdateGameState(GameStates.Play);
+        }
     }
 }
