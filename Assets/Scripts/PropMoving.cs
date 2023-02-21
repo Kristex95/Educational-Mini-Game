@@ -33,13 +33,4 @@ public class PropMoving : MonoBehaviour
     {
         rb.velocity = new Vector3(xVelocity, 0, 0);
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == 6)
-        {
-            Destroy(gameObject);
-        }
-    }
-
 }

@@ -3,23 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
     public GameEvent onGameStateChange;
-
-    public static GameManager Instance;
+    public GameEvent onScoreChange;
 
     public static GameStates state;
 
-    public int score { get; private set; }
+    public static int score { get; private set; }
+
+    [Header("Props Data")]
+    [SerializeField] private string propsDataPath;
+    [HideInInspector] public static List<PropData> playablePropsData;
 
     private void Awake()
     {
-        Instance = this;
-        UpdateGameState(GameStates.Play);
         score = 0;
+
+        List<PropData> propsData = Resources.LoadAll<PropData>(propsDataPath).ToList();
+        playablePropsData = propsData.OrderBy(x => Guid.NewGuid()).Take(3).ToList();
+
+        foreach (var playablePropData in playablePropsData)
+            Debug.Log(playablePropData.Mesh);
+
+        UpdateGameState(GameStates.Play);
     }
 
     public void UpdateGameState(GameStates newState)
@@ -51,5 +61,12 @@ public class GameManager : MonoBehaviour
         {
             UpdateGameState(GameStates.Play);
         }
+    }
+
+    public void AddScore()
+    {
+        score += 1;
+        Debug.Log(score);
+        onScoreChange.TriggerEvent();
     }
 }

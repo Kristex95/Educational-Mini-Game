@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class PropSpawning : MonoBehaviour
 {
-    [SerializeField] Subject _gameManagerSubject;
-
     [SerializeField] private List<Transform> spawnpoints;
 
-    [SerializeField] private GameObject propPrefab;
+
 
 
     [SerializeField] private float propSpeed = 1f;
+
+    [Header("Prop")]
+    [SerializeField] private GameObject propPrefab;
+    [SerializeField] private Material material;
 
     [Header("Position offset")]
     [SerializeField] [Range(0.1f, 5f)] private float maxY;
@@ -24,6 +26,12 @@ public class PropSpawning : MonoBehaviour
     private bool doSpawn = false;
     private bool coroutineRunning = false;
 
+
+
+    private void Awake()
+    {
+        
+    }
 
     public void OnStateChange()
     {
@@ -51,6 +59,13 @@ public class PropSpawning : MonoBehaviour
             int randSide = Random.Range(0, 2);
 
             GameObject newProp = Instantiate(propPrefab, spawnpoints[randSide].position + new Vector3(0, Random.Range(minY, maxY), 0), Quaternion.identity);
+            
+            //Setting up prop
+            Mesh randMesh = GameManager.playablePropsData[Random.Range(0, 3)].Mesh;
+            newProp.GetComponent<MeshFilter>().mesh = randMesh;
+            newProp.GetComponent<MeshCollider>().sharedMesh = randMesh;
+            newProp.GetComponent<Renderer>().material = material;
+
             if(randSide == 0)
                 newProp.GetComponent<PropMoving>().SetHorizontalVelocity(1 * propSpeed);
             else
