@@ -13,21 +13,39 @@ public class GameManager : MonoBehaviour
 
     public static GameStates state;
 
+
+    [Header("Game info")]
+    [SerializeField] private int lives = 3;
     public static int score { get; private set; }
 
     [Header("Props Data")]
     [SerializeField] private string propsDataPath;
     [HideInInspector] public static List<PropData> playablePropsData;
 
+    [Header("Buckets")]
+    [SerializeField] private List<GameObject> signs;
+    [SerializeField] private List<BucketTriggerScript> triggerScripts;
+
     private void Awake()
     {
+        lives = 3;
         score = 0;
 
         List<PropData> propsData = Resources.LoadAll<PropData>(propsDataPath).ToList();
         playablePropsData = propsData.OrderBy(x => Guid.NewGuid()).Take(3).ToList();
 
-        foreach (var playablePropData in playablePropsData)
-            Debug.Log(playablePropData.Mesh);
+        for (int i = 0; i < playablePropsData.Count; i++)
+        {
+            //signs materials
+            var materials = signs[i].GetComponent<MeshRenderer>().materials;
+            materials[1] = playablePropsData[i].ImageMaterial;
+            signs[i].GetComponent<MeshRenderer>().materials = materials;
+
+            //triggers prop names
+            triggerScripts[i].propTriggerName = playablePropsData[i].name;
+        }
+
+
 
         UpdateGameState(GameStates.Play);
     }
@@ -68,5 +86,13 @@ public class GameManager : MonoBehaviour
         score += 1;
         Debug.Log(score);
         onScoreChange.TriggerEvent();
+    }
+
+    public void ReduceLives()
+    {
+        if(lives > 0)
+        {
+            lives--;
+        }
     }
 }

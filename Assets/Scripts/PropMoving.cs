@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PropMoving : MonoBehaviour
 {
-
+    [SerializeField] private GameEvent onReduceLives;
     private Rigidbody rb;
     private Renderer _renderer;
     private bool hasAppeared;
@@ -11,6 +11,11 @@ public class PropMoving : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         _renderer = GetComponent<Renderer>();
+
+        int rotationDir = 0;
+        while (rotationDir == 0)
+            rotationDir = Random.Range(-1, 2);
+        rb.angularVelocity = new Vector3(0, Random.Range(.3f, 1f) * rotationDir, 0);
     }
 
     private void Update()
@@ -25,6 +30,7 @@ public class PropMoving : MonoBehaviour
             if (!_renderer.isVisible)
             {
                 Destroy(gameObject);
+                onReduceLives.TriggerEvent();
             }
         }
     }

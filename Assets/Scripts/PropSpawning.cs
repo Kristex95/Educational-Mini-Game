@@ -59,12 +59,15 @@ public class PropSpawning : MonoBehaviour
             int randSide = Random.Range(0, 2);
 
             GameObject newProp = Instantiate(propPrefab, spawnpoints[randSide].position + new Vector3(0, Random.Range(minY, maxY), 0), Quaternion.identity);
-            
+
             //Setting up prop
-            Mesh randMesh = GameManager.playablePropsData[Random.Range(0, 3)].Mesh;
+
+            PropData propData = GameManager.playablePropsData[Random.Range(0, 3)];
+            Mesh randMesh = propData.Mesh;
             newProp.GetComponent<MeshFilter>().mesh = randMesh;
             newProp.GetComponent<MeshCollider>().sharedMesh = randMesh;
-            newProp.GetComponent<Renderer>().material = material;
+            newProp.GetComponent<Renderer>().materials = propData.Materials.ToArray();
+            newProp.name = propData.name;
 
             if(randSide == 0)
                 newProp.GetComponent<PropMoving>().SetHorizontalVelocity(1 * propSpeed);

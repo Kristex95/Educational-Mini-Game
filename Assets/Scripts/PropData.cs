@@ -8,6 +8,8 @@ public class PropData : ScriptableObject
 {
     [SerializeField] private int id;
     [SerializeField] private Mesh mesh;
+    [SerializeField] private List<Material> materials;
+    [SerializeField] private Material imageMaterial;
 
     public int Id
     {
@@ -22,5 +24,18 @@ public class PropData : ScriptableObject
         {
             return mesh;
         }
+    }
+
+    public List<Material> Materials
+    {
+        get
+        {
+            return materials;
+        }
+    }
+
+    public Material ImageMaterial
+    {
+        get { return imageMaterial; }
     }
 }

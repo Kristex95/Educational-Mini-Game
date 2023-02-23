@@ -2,15 +2,21 @@ using UnityEngine;
 
 public class BucketTriggerScript : MonoBehaviour
 {
-    [SerializeField] private GameEvent onTriggerEnter;
+    [SerializeField] private GameEvent onAddScore;
+    [SerializeField] private GameEvent onReduceLives;
+    [HideInInspector] public string propTriggerName;
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger");
-        if (other.gameObject.layer == 6)
+        if (propTriggerName == other.gameObject.name)
         {
             Destroy(other.gameObject);
-            onTriggerEnter.TriggerEvent();
+            onAddScore.TriggerEvent();
+        }
+        else
+        {
+            Destroy(other.gameObject);
+            onReduceLives.TriggerEvent();
         }
     }
 }
