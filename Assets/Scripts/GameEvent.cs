@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [CreateAssetMenu(menuName = "Game Event")]
 public class GameEvent : ScriptableObject
@@ -9,7 +10,7 @@ public class GameEvent : ScriptableObject
 
     public void TriggerEvent()
     {
-        listeners.ForEach((listener) =>
+        listeners.ToList().ForEach((listener) =>
         {
             listener.OnEventTriggered();
         });
@@ -23,5 +24,10 @@ public class GameEvent : ScriptableObject
     public void RemoveListener(GameEventListener listener)
     {
         listeners.Remove(listener);
+    }
+
+    private void OnDisable()
+    {
+        listeners.Clear();
     }
 }

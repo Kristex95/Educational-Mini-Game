@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using System;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
     public GameEvent onGameStateChange;
-    public GameEvent onScoreChange;
+    public AddScoreEvent onScoreChange;
 
     public static GameStates state;
 
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
         score = 0;
 
         List<PropData> propsData = Resources.LoadAll<PropData>(propsDataPath).ToList();
-        playablePropsData = propsData.OrderBy(x => Guid.NewGuid()).Take(3).ToList();
+        playablePropsData = propsData.OrderBy(x => Guid.NewGuid()).Take(triggerScripts.Count).ToList();
 
         for (int i = 0; i < playablePropsData.Count; i++)
         {
@@ -57,10 +58,13 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameStates.Play:
+                Time.timeScale = 1;
                 break;
             case GameStates.End:
+                Time.timeScale = 0;
                 break;
             case GameStates.Pause:
+                Time.timeScale = 0;
                 break;
             default:
                 break;
@@ -84,15 +88,26 @@ public class GameManager : MonoBehaviour
     public void AddScore()
     {
         score += 1;
-        Debug.Log(score);
-        onScoreChange.TriggerEvent();
+        onScoreChange.Invoke(score);
     }
+
+    [System.Serializable]
+    public class AddScoreEvent : UnityEvent<int> { }
 
     public void ReduceLives()
     {
         if(lives > 0)
         {
             lives--;
+        }
+
+        if(lives == 0)
+        {
+            UpdateGameState(GameStates.End);
+
+            //UI Logic
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }
