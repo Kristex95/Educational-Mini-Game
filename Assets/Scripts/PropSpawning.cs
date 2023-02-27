@@ -7,8 +7,6 @@ public class PropSpawning : MonoBehaviour
     [SerializeField] private List<Transform> spawnpoints;
 
 
-
-
     [SerializeField] private float propSpeed = 1f;
 
     [Header("Prop")]
@@ -30,7 +28,7 @@ public class PropSpawning : MonoBehaviour
 
     private void Awake()
     {
-        
+
     }
 
     public void OnStateChange()
@@ -78,6 +76,21 @@ public class PropSpawning : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
         coroutineRunning = false;
+    }
+
+    public void OnScoreUpdate(int score)
+    {
+        if(score % 20 == 0 && propSpeed < 5)
+        {
+            propSpeed += 0.2f;
+        }
+        else if(score % 10 == 0)
+        {
+            if(maxTime > 1.4f)
+                maxTime -= 0.2f;
+            if(minTime > 0.4f)
+                minTime -= 0.025f;
+        }
     }
 
 }

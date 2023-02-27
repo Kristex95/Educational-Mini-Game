@@ -29,8 +29,8 @@ public class PropMoving : MonoBehaviour
         {
             if (!_renderer.isVisible)
             {
-                Destroy(gameObject);
                 onReduceLives.TriggerEvent();
+                Destroy(gameObject);
             }
         }
     }

@@ -5,12 +5,14 @@ using UnityEngine.Events;
 using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
     public GameEvent onGameStateChange;
     public AddScoreEvent onScoreChange;
+    public UpdateLivesEvent onUpdateLives;
 
     public static GameStates state;
 
@@ -26,6 +28,14 @@ public class GameManager : MonoBehaviour
     [Header("Buckets")]
     [SerializeField] private List<GameObject> signs;
     [SerializeField] private List<BucketTriggerScript> triggerScripts;
+
+    [Header("Time")]
+    [SerializeField] private float time;
+
+    [Header("UI")]
+    [SerializeField] private GameObject PauseUI;
+    [SerializeField] private GameObject EndUI;
+    [SerializeField] private TextMeshProUGUI endText;
 
     private void Awake()
     {
@@ -51,6 +61,11 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameStates.Play);
     }
 
+    private void Start()
+    {
+        time -= Time.time;
+    }
+
     public void UpdateGameState(GameStates newState)
     {
         state = newState;
@@ -59,12 +74,16 @@ public class GameManager : MonoBehaviour
         {
             case GameStates.Play:
                 Time.timeScale = 1;
+                PauseUI.SetActive(false);
                 break;
             case GameStates.End:
+                endText.text = score.ToString();
                 Time.timeScale = 0;
+                EndUI.SetActive(true);
                 break;
             case GameStates.Pause:
                 Time.timeScale = 0;
+                PauseUI.SetActive(true);
                 break;
             default:
                 break;
@@ -83,16 +102,27 @@ public class GameManager : MonoBehaviour
         {
             UpdateGameState(GameStates.Play);
         }
+
+        time = Time.time;
     }
 
     public void AddScore()
     {
         score += 1;
         onScoreChange.Invoke(score);
+        if(score % 100 == 0 && lives < 3)
+        {
+            lives++;
+            onUpdateLives.Invoke(lives);
+        }
+        
     }
 
     [System.Serializable]
     public class AddScoreEvent : UnityEvent<int> { }
+
+    [System.Serializable]
+    public class UpdateLivesEvent : UnityEvent<int> { }
 
     public void ReduceLives()
     {
@@ -101,13 +131,31 @@ public class GameManager : MonoBehaviour
             lives--;
         }
 
+        onUpdateLives.Invoke(lives);
+
         if(lives == 0)
         {
             UpdateGameState(GameStates.End);
-
-            //UI Logic
-
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+    }
+
+    public void ContinueGame()
+    {
+        UpdateGameState(GameStates.Play);
+    }
+
+    public void PauseGame()
+    {
+        UpdateGameState(GameStates.Pause);
+    }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ExitToMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
