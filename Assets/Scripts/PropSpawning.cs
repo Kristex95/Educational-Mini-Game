@@ -21,14 +21,36 @@ public class PropSpawning : MonoBehaviour
     [SerializeField] private float minTime;
     [SerializeField] private float maxTime;
 
+    [Header("Camera")]
+    private Camera cam;
+
     private bool doSpawn = false;
     private bool coroutineRunning = false;
 
 
+    private Vector2 res;
 
     private void Awake()
     {
+        res.x = Screen.width;
+        res.y = Screen.height;
+        cam = Camera.main;
+        Vector3 spawnPos = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, 0f, Mathf.Abs(cam.gameObject.transform.position.z) + 1.86f));
+        spawnpoints[0].transform.position = new Vector3(-(spawnPos.x + 1f), spawnpoints[0].position.y, spawnpoints[0].position.z);
+        spawnpoints[1].transform.position = new Vector3(spawnPos.x + 1f, spawnpoints[1].position.y, spawnpoints[1].position.z);
+    }
 
+    private void Update()
+    {
+        if (res.x != Screen.width || res.y != Screen.height)
+        {
+            Vector3 spawnPos = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, 0f, Mathf.Abs(cam.gameObject.transform.position.z) + 1.86f));
+            spawnpoints[0].transform.position = new Vector3(-(spawnPos.x + 1f), spawnpoints[0].position.y, spawnpoints[0].position.z);
+            spawnpoints[1].transform.position = new Vector3(spawnPos.x + 1f, spawnpoints[1].position.y, spawnpoints[1].position.z);
+
+            res.x = Screen.width;
+            res.y = Screen.height;
+        }
     }
 
     public void OnStateChange()
@@ -92,5 +114,4 @@ public class PropSpawning : MonoBehaviour
                 minTime -= 0.025f;
         }
     }
-
 }
