@@ -12,5 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/DropGame.unity
     guid: af2e46bec6a2070468c6d75a7aac61c4
   m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 0b24aa3b512cfae46a8dd387a13506c2,
+      type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000,
+      guid: 0b8df85750cdbb640955531067581171, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
       guid: 45bb5cb1320491d44b51b2d06e773cd2, type: 2}

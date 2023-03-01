@@ -48,4 +48,5 @@ public class MouseDrag : MonoBehaviour
         rb.isKinematic = false;
         GetComponent<Collider>().isTrigger = false;
     }
+
 }

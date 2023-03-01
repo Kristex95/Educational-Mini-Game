@@ -1,0 +1,54 @@
+{
+    "name": "PlayerControls",
+    "maps": [
+        {
+            "name": "DragAndDrop",
+            "id": "e97930ba-a026-44e6-ba70-93a1bf6e8775",
+            "actions": [
+                {
+                    "name": "TouchPosition",
+                    "type": "Value",
+                    "id": "afd2450a-4ff4-4ea7-abce-f1a615ba2456",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "TouchPress",
+                    "type": "Button",
+                    "id": "066bc30d-94e3-4d44-bd50-647f6e085f04",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "bd57b2e6-a46b-4143-88ef-eefe319ca318",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TouchPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8e74b470-2fe6-48bf-a7d7-e006430e000e",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TouchPress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
