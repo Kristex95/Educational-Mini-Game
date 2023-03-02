@@ -42,7 +42,7 @@ public class InputManager : MonoBehaviour
         Vector3 position = Camera.main.ScreenToWorldPoint(new Vector3(touchPosition.x, touchPosition.y, 1.86f + Mathf.Abs(Camera.main.transform.position.z)));
 
         RaycastHit hit;
-        if(Physics.Raycast(Camera.main.transform.position, position - Camera.main.transform.position, out hit, 100f))
+        if(Physics.Raycast(Camera.main.transform.position, position - Camera.main.transform.position, out hit, 10f))
         {
             if(hit.collider.gameObject.layer == 6)
             {
@@ -72,7 +72,7 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (holding)
         {

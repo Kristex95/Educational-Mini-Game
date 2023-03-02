@@ -50,7 +50,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bd57b2e6-a46b-4143-88ef-eefe319ca318"",
-                    ""path"": ""<Touchscreen>/position"",
+                    ""path"": ""<Pointer>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -61,7 +61,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""8e74b470-2fe6-48bf-a7d7-e006430e000e"",
-                    ""path"": ""<Touchscreen>/Press"",
+                    ""path"": ""<Pointer>/press"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

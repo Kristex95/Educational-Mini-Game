@@ -59,6 +59,8 @@ public class GameManager : MonoBehaviour
 
 
         UpdateGameState(GameStates.Play);
+
+        Debug.Log("Start");
     }
 
     private void Start()
@@ -94,14 +96,14 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && state == GameStates.Play)
+        /*if(Input.GetKeyDown(KeyCode.Escape) && state == GameStates.Play)
         {
             UpdateGameState(GameStates.Pause);
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && state == GameStates.Pause)
         {
             UpdateGameState(GameStates.Play);
-        }
+        }*/
 
         time = Time.time;
     }
