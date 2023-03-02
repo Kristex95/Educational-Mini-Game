@@ -85,7 +85,6 @@ public class PropSpawning : MonoBehaviour
             PropData propData = GameManager.playablePropsData[Random.Range(0, 3)];
             Mesh randMesh = propData.Mesh;
             newProp.GetComponent<MeshFilter>().mesh = randMesh;
-            newProp.GetComponent<MeshCollider>().sharedMesh = randMesh;
             newProp.GetComponent<Renderer>().materials = propData.Materials.ToArray();
             newProp.name = propData.name;
 
@@ -102,15 +101,15 @@ public class PropSpawning : MonoBehaviour
 
     public void OnScoreUpdate(int score)
     {
-        if(score % 20 == 0 && propSpeed < 5)
+        if(score % 20 == 0 && propSpeed + .3f < 3.5f)
         {
-            propSpeed += 0.2f;
+            propSpeed += 0.3f;
         }
         else if(score % 10 == 0)
         {
-            if(maxTime > 1.4f)
+            if(maxTime -.2f > 1.2f)
                 maxTime -= 0.2f;
-            if(minTime > 0.4f)
+            if(minTime - 0.025f > 0.4f)
                 minTime -= 0.025f;
         }
     }
